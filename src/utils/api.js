@@ -4,7 +4,7 @@
  * @returns {Promise} - A promise that resolves with the response
  */
 export const submitToGoogleSheets = async (formData) => {
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/Your_path/exec'
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyv9HPtJ4Jsw6BgoEGtkw_mDpfe8KbySQBYBmEoq0CHam2CbaEDdnJ8_knHPFCrPDmX/exec'
   
   try {
     // Format the date and time
@@ -57,7 +57,7 @@ export const sendWhatsAppInvite = (phoneNumber) => {
   // Format phone number by removing any non-digit characters
   const formattedNumber = phoneNumber.replace(/\D/g, '')
   
-  const whatsappGroupLink = 'https://chat.whatsapp.com/WhatsApp_link'
+  const whatsappGroupLink = 'https://chat.whatsapp.com/Lf378cgWw2k4WyVBqHA1dq'
   const whatsappMessage = encodeURIComponent(
     `Welcome to NSS KMIT! Here's your WhatsApp group invite link: ${whatsappGroupLink}`
   )
