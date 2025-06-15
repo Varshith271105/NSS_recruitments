@@ -19,7 +19,7 @@ function App() {
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 py-6 sm:py-8 lg:py-16 xl:py-20">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-6">
         {isSubmitted ? (
           <SuccessMessage formData={formData} />
         ) : (

@@ -346,7 +346,7 @@ const RegistrationForm = ({ onSubmissionSuccess }) => {
               onChange={handleChange}
               required
               error={errors.rollNumber}
-              placeholder="Enter your roll number"
+              placeholder="Roll number"
             />
             
             <FormField
