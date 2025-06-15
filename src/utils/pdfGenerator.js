@@ -68,8 +68,9 @@ export const generatePDF = async (formData) => {
     { label: '9. Contact Phone Number', value: formData.phoneNumber },
     { label: '10. Email Address', value: formData.email },
     { label: '11. JNTU Roll Number', value: formData.rollNumber },
-    { label: '12. Past NSS Volunteer', value: formData.pastNssVolunteer },
-    { label: '13. Member of NCC', value: formData.memberOfNcc },
+    { label: '12. Graduation Year', value: formData.graduationYear },
+    { label: '13. Past NSS Volunteer', value: formData.pastNssVolunteer },
+    { label: '14. Member of NCC', value: formData.memberOfNcc },
   ];
 
   fields.forEach((field) => {
@@ -95,30 +96,31 @@ export const generatePDF = async (formData) => {
   currentY += lineHeight;
 
   pdf.setFont('Helvetica', 'normal');
-  const declarationText = 'I hereby declare that I will adhere to the rules and regulations of the National Service Scheme (NSS). ' +
+  const declarationText = `I ${formData.fullName} hereby declare that I will adhere to the rules and regulations of the National Service Scheme (NSS). ` +
     'I pledge to serve with dedication, uphold the objectives of the NSS, and contribute to the welfare of ' +
     'the nation to the best of my ability.';
   const declarationLines = pdf.splitTextToSize(declarationText, pageWidth - marginLeft * 2);
   pdf.text(declarationLines, marginLeft, currentY);
   currentY += lineHeight * declarationLines.length + lineHeight;
 
-  // Date and Name from formData
-  const dateText = `Date: ${formData.dob || new Date().toLocaleDateString('en-IN')}`; // Fallback to current date if dob is empty
-  pdf.setFont('Helvetica', 'bold');
-  const nameText = `Name: ${formData.fullName}`;
-  pdf.text(dateText, marginLeft, currentY + lineHeight);
-  pdf.text(nameText, pageWidth - marginLeft - 80, currentY + lineHeight);
+  // Add space before signatures
+  currentY += lineHeight * 2;
 
-  // Signature of the Volunteer (moved up with space)
-  currentY += lineHeight; // Reduced space to move up
+  // Signature of the Volunteer
   pdf.setFont('Helvetica', 'normal');
-  pdf.text('Signature of the Volunteer', pageWidth - marginLeft - 80, currentY + lineHeight);
-  currentY += lineHeight * 3; // Space for signature (24mm)
+  pdf.text('Signature of the Volunteer', marginLeft, currentY);
+  
+  // Add space for signature line
+  currentY += lineHeight * 3
 
-  // Signatures at complete bottom
-  const bottomY = pageHeight - marginTop;
-  pdf.text('Signature of the President of NSS KMIT', marginLeft, bottomY + lineHeight);
-  pdf.text('Signature of the Programme Officer', pageWidth - marginLeft - 80, bottomY + lineHeight); // Complete bottom right
+  // Signature of the President of NSS KMIT
+  pdf.text('Signature of the President of NSS KMIT', marginLeft, currentY);
+  
+  // Add space for signature line
+  currentY += lineHeight * 3
+
+  // Signature of the Programme Officer
+  pdf.text('Signature of the Programme Officer', marginLeft, currentY);
 
   // Save PDF
   pdf.save(`NSS_Registration_${formData.fullName}.pdf`);

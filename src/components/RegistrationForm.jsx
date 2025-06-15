@@ -152,29 +152,31 @@ const RegistrationForm = ({ onSubmissionSuccess }) => {
       return
     }
     
-    setIsSubmitting(true)
-    
-    try {
-      // Submit form data to Google Sheets
-      const result = await submitToGoogleSheets(formData)
-      
-      if (result.success) {
-        // Instead of showing success immediately, show passcode modal
-        setPendingFormData(formData)
-        setShowPasscodeModal(true)
-      }
-    } catch (error) {
-      console.error('Form submission error:', error)
-      setSubmitError('There was an error submitting your form. Please try again.')
-    } finally {
-      setIsSubmitting(false)
-    }
+    // Show passcode modal first, before submitting to Google Sheets
+    setPendingFormData(formData)
+    setShowPasscodeModal(true)
   }
 
   // Handle passcode verification success
-  const handlePasscodeSuccess = () => {
+  const handlePasscodeSuccess = async () => {
     if (pendingFormData) {
-      onSubmissionSuccess(pendingFormData)
+      setIsSubmitting(true)
+      
+      try {
+        // Submit form data to Google Sheets after successful passcode verification
+        const result = await submitToGoogleSheets(pendingFormData)
+        
+        if (result.success) {
+          onSubmissionSuccess(pendingFormData)
+        }
+      } catch (error) {
+        console.error('Form submission error:', error)
+        setSubmitError('There was an error submitting your form. Please try again.')
+        setShowPasscodeModal(false)
+        setPendingFormData(null)
+      } finally {
+        setIsSubmitting(false)
+      }
     }
   }
 
@@ -397,7 +399,7 @@ const RegistrationForm = ({ onSubmissionSuccess }) => {
           <button
             type="submit"
             disabled={isSubmitting}
-            className={`btn btn-primary flex items-center justify-center lg:text-lg xl:text-xl lg:px-8 xl:px-12 lg:py-4 xl:py-6 ${
+            className={`btn btn-primary flex items-center justify-center lg:max-w-md lg:mx-auto ${
               isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
             }`}
           >

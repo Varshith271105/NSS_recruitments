@@ -4,8 +4,8 @@ import NssLogo from './NssLogo'
 
 const Header = () => {
   return (
-    <header className="bg-white shadow-sm py-2 sm:py-4 lg:py-8 xl:py-10">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12">
+    <header className="bg-white shadow-sm py-2 sm:py-4 lg:py-6">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col items-center space-y-3 sm:space-y-6 lg:flex-row lg:justify-between lg:space-y-0 xl:space-x-12">
           {/* Left side - KMIT (Main Institution) */}
           <div className="flex items-center justify-center sm:justify-start lg:flex-1">

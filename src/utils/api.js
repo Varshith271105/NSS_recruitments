@@ -27,6 +27,7 @@ export const submitToGoogleSheets = async (formData) => {
       formData.phoneNumber, // Contact Phone Number
       formData.email, // Email Address
       formData.rollNumber, // JNTU Roll Number
+      formData.graduationYear, // Graduation Year
       formData.pastNssVolunteer, // Past NSS Volunteer
       formData.memberOfNcc, // Member of NCC
     ]

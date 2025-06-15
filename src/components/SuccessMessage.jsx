@@ -62,7 +62,7 @@ const SuccessMessage = ({ formData }) => {
             <button
               type="button"
               onClick={handleDownloadPDF}
-              className="btn btn-primary flex items-center justify-center text-sm sm:text-base lg:text-lg py-3 px-6 sm:px-8 lg:px-12"
+              className="btn btn-primary flex items-center justify-center text-sm sm:text-base py-3 px-6 sm:px-8 lg:max-w-sm lg:mx-auto"
             >
               <FaFilePdf className="mr-2" />
               Download PDF

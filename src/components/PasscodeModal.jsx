@@ -85,48 +85,48 @@ const PasscodeModal = ({ isOpen, onClose, onSuccess }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-3 sm:p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-sm sm:max-w-md p-5 sm:p-6 lg:p-8 animate-entry max-h-screen overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-sm sm:max-w-md lg:max-w-sm p-5 sm:p-6 lg:p-4 animate-entry max-h-screen lg:max-h-fit overflow-y-auto lg:overflow-visible">
         {/* Header */}
-        <div className="flex items-center justify-center mb-4 sm:mb-6">
+        <div className="flex items-center justify-center mb-4 sm:mb-6 lg:mb-4">
           <div className="flex items-center">
-            <FaWhatsapp className="text-green-500 text-xl sm:text-2xl mr-2 sm:mr-3" />
-            <h2 className="text-lg sm:text-xl lg:text-2xl font-bold text-gray-900">
+            <FaWhatsapp className="text-green-500 text-xl sm:text-2xl lg:text-xl mr-2 sm:mr-3 lg:mr-2" />
+            <h2 className="text-lg sm:text-xl lg:text-lg font-bold text-gray-900">
               Join WhatsApp Group
             </h2>
           </div>
         </div>
 
         {/* Instructions */}
-        <div className="mb-5 sm:mb-6 text-center">
-          <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4 mb-4">
-            <p className="text-xs sm:text-sm text-green-800 font-medium leading-relaxed">
+        <div className="mb-5 sm:mb-6 lg:mb-4 text-center">
+          <div className="bg-green-50 border border-green-200 rounded-lg p-3 sm:p-4 lg:p-3 mb-4 lg:mb-3">
+            <p className="text-xs sm:text-sm lg:text-xs text-green-800 font-medium leading-relaxed">
               Join our NSS KMIT WhatsApp group to stay updated with activities and events!
             </p>
           </div>
           
-          <div className="space-y-2 text-xs sm:text-sm text-gray-700">
+                    <div className="space-y-2 lg:space-y-1 text-xs sm:text-sm lg:text-xs text-gray-700">
             <p className="flex items-center justify-center">
-              <span className="bg-primary-100 text-primary-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-2">1</span>
+              <span className="bg-primary-100 text-primary-700 rounded-full w-5 h-5 lg:w-4 lg:h-4 flex items-center justify-center text-xs lg:text-xs font-bold mr-2">1</span>
               First, join our WhatsApp group using the link
             </p>
             <p className="flex items-center justify-center">
-              <span className="bg-primary-100 text-primary-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-2">2</span>
-              Find the passcode in the group description
+              <span className="bg-primary-100 text-primary-700 rounded-full w-5 h-5 lg:w-4 lg:h-4 flex items-center justify-center text-xs lg:text-xs font-bold mr-2">2</span>
+              <span className="-ml-1">Find the passcode in the group description</span>
             </p>
-                         <p className="flex items-center justify-center font-medium">
-               <span className="bg-primary-100 text-primary-700 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold mr-2">3</span>
-               Enter the 4-digit passcode below to complete
-             </p>
+            <p className="flex items-center justify-center font-medium">
+              <span className="bg-primary-100 text-primary-700 rounded-full w-5 h-5 lg:w-4 lg:h-4 flex items-center justify-center text-xs lg:text-xs font-bold mr-2">3</span>
+              Enter the 4-digit passcode below to complete
+            </p>
           </div>
         </div>
 
         {/* WhatsApp Join Button */}
-        <div className="mb-5 sm:mb-6 text-center">
+        <div className="mb-5 sm:mb-6 lg:mb-4 text-center">
           <a
-            href="https://chat.whatsapp.com/your-group-invite-link"
+            href="https://chat.whatsapp.com/Lf378cgWw2k4WyVBqHA1dq"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center px-4 sm:px-6 py-3 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition-colors text-sm sm:text-base w-full sm:w-auto justify-center"
+            className="inline-flex items-center px-4 sm:px-6 lg:px-4 py-3 lg:py-2 bg-green-500 text-white font-medium rounded-lg hover:bg-green-600 transition-colors text-sm sm:text-base lg:text-sm w-full sm:w-auto justify-center"
           >
             <FaWhatsapp className="mr-2" />
             Join WhatsApp Group
@@ -134,10 +134,10 @@ const PasscodeModal = ({ isOpen, onClose, onSuccess }) => {
         </div>
 
         {/* Passcode Input */}
-        <div className="mb-5 sm:mb-6">
-          <div className="flex items-center justify-center mb-4">
-            <FaLock className="text-primary-600 mr-2 text-sm sm:text-base" />
-            <label className="text-sm sm:text-base font-medium text-gray-700">
+        <div className="mb-5 sm:mb-6 lg:mb-4">
+          <div className="flex items-center justify-center mb-4 lg:mb-3">
+            <FaLock className="text-primary-600 mr-2 text-sm sm:text-base lg:text-sm" />
+            <label className="text-sm sm:text-base lg:text-sm font-medium text-gray-700">
               Enter 4-digit passcode:
             </label>
           </div>
