@@ -3,12 +3,12 @@ import logoImage from '../assets/nss.jpg'
 
 const NssLogo = ({ className }) => {
   return (
-    <div className={`${className}`}>
-      <div className="flex items-center justify-center h-full w-full bg-primary-100 rounded-full">
+    <div className={`${className} overflow-hidden`}>
+      <div className="h-full w-full rounded-full border-2 border-primary-100">
         <img 
           src={logoImage} 
           alt="NSS Logo"
-          className="h-full w-full object-cover rounded-full"
+          className="h-full w-full object-contain"
         />
       </div>
     </div>
