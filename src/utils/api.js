@@ -49,19 +49,10 @@ export const submitToGoogleSheets = async (formData) => {
 }
 
 /**
- * Sends WhatsApp message with group invite link
- * @param {string} phoneNumber - Phone number to send message to
+ * Opens WhatsApp group invite link directly for user to join
  * @returns {void}
  */
-export const sendWhatsAppInvite = (phoneNumber) => {
-  // Format phone number by removing any non-digit characters
-  const formattedNumber = phoneNumber.replace(/\D/g, '')
-  
+export const openWhatsAppGroupInvite = () => {
   const whatsappGroupLink = 'https://chat.whatsapp.com/Lf378cgWw2k4WyVBqHA1dq'
-  const whatsappMessage = encodeURIComponent(
-    `Welcome to NSS KMIT! Here's your WhatsApp group invite link: ${whatsappGroupLink}`
-  )
-  
-  // Open WhatsApp in a new tab with the message
-  window.open(`https://wa.me/${formattedNumber}?text=${whatsappMessage}`, '_blank')
+  window.open(whatsappGroupLink, '_blank')
 }

@@ -4,40 +4,36 @@ import { generatePDF } from '../utils/pdfGenerator'
 
 const SuccessMessage = ({ formData }) => {
   const componentRef = useRef()
-  
+
   const handleDownloadPDF = () => {
     if (formData) {
       generatePDF(formData)
     }
   }
-  
+
   const openWhatsApp = () => {
-    if (formData?.phoneNumber) {
-      const whatsappGroupLink = 'https://chat.whatsapp.com/Lf378cgWw2k4WyVBqHA1dq'
-      const whatsappMessage = encodeURIComponent(
-        `Welcome to NSS KMIT! Here's your WhatsApp group invite link: ${whatsappGroupLink}`
-      )
-      window.open(`https://wa.me/${formData.phoneNumber}?text=${whatsappMessage}`, '_blank')
-    }
+    // Open the group invite directly (no message to user's personal chat)
+    const whatsappGroupLink = 'https://chat.whatsapp.com/Lf378cgWw2k4WyVBqHA1dq'
+    window.open(whatsappGroupLink, '_blank')
   }
-  
+
   return (
     <div className="max-w-3xl mx-auto animate-slide-up" ref={componentRef}>
       <div className="bg-white shadow-lg rounded-lg overflow-hidden">
         <div className="bg-success-100 p-6 flex items-center justify-center border-b border-success-200">
           <FaCheckCircle className="text-success-600 text-5xl mb-2" />
         </div>
-        
+
         <div className="p-6">
           <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
             Registration Successful!
           </h2>
-          
+
           <p className="text-center text-gray-600 mb-6">
             Thank you for registering with NSS KMIT. Your information has been successfully recorded. 
-            Please check your WhatsApp for the group invitation link.
+            Click below to join the official WhatsApp group.
           </p>
-          
+
           <div className="space-y-4 mb-6">
             <div className="bg-gray-50 p-4 rounded-md">
               <h3 className="font-medium text-gray-800 mb-2">Registration Details</h3>
@@ -52,7 +48,7 @@ const SuccessMessage = ({ formData }) => {
               </p>
             </div>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 justify-center">
             <button
               type="button"
@@ -62,7 +58,7 @@ const SuccessMessage = ({ formData }) => {
               <FaFilePdf className="mr-2" />
               Download PDF
             </button>
-            
+
             <button
               type="button"
               onClick={openWhatsApp}
@@ -74,7 +70,7 @@ const SuccessMessage = ({ formData }) => {
           </div>
         </div>
       </div>
-      
+
       <div className="mt-8 text-center">
         <p className="text-gray-600">
           If you have any questions, please contact the NSS Program Officer.
