@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { FaSpinner, FaCheck, FaExclamationTriangle } from 'react-icons/fa'
 import FormField from './FormField'
 import Section from './Section'
+import PasscodeModal from './PasscodeModal'
 import { 
   validateRequired, 
   validateEmail, 
@@ -23,6 +24,7 @@ const initialFormState = {
   phoneNumber: '',
   email: '',
   rollNumber: '',
+  graduationYear: '',
   pastNssVolunteer: '',
   memberOfNcc: '',
 }
@@ -39,6 +41,7 @@ const initialErrorState = {
   phoneNumber: '',
   email: '',
   rollNumber: '',
+  graduationYear: '',
   pastNssVolunteer: '',
   memberOfNcc: '',
 }
@@ -65,11 +68,19 @@ const yesNoOptions = [
   { value: 'No', label: 'No' },
 ]
 
+const graduationYearOptions = [
+  { value: '2026', label: '2026' },
+  { value: '2027', label: '2027' },
+  { value: '2028', label: '2028' },
+]
+
 const RegistrationForm = ({ onSubmissionSuccess }) => {
   const [formData, setFormData] = useState(initialFormState)
   const [errors, setErrors] = useState(initialErrorState)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
+  const [showPasscodeModal, setShowPasscodeModal] = useState(false)
+  const [pendingFormData, setPendingFormData] = useState(null)
   
   // Handle input change
   const handleChange = (e) => {
@@ -110,6 +121,7 @@ const RegistrationForm = ({ onSubmissionSuccess }) => {
     newErrors.email = validateEmail(formData.email)
     newErrors.phoneNumber = validatePhoneNumber(formData.phoneNumber)
     newErrors.rollNumber = validateRollNumber(formData.rollNumber)
+    newErrors.graduationYear = validateRequired(formData.graduationYear, 'Graduation Year')
     
     // Check if there are any errors
     for (const errorKey in newErrors) {
@@ -147,7 +159,9 @@ const RegistrationForm = ({ onSubmissionSuccess }) => {
       const result = await submitToGoogleSheets(formData)
       
       if (result.success) {
-        onSubmissionSuccess(formData)
+        // Instead of showing success immediately, show passcode modal
+        setPendingFormData(formData)
+        setShowPasscodeModal(true)
       }
     } catch (error) {
       console.error('Form submission error:', error)
@@ -155,6 +169,19 @@ const RegistrationForm = ({ onSubmissionSuccess }) => {
     } finally {
       setIsSubmitting(false)
     }
+  }
+
+  // Handle passcode verification success
+  const handlePasscodeSuccess = () => {
+    if (pendingFormData) {
+      onSubmissionSuccess(pendingFormData)
+    }
+  }
+
+  // Handle passcode modal close
+  const handlePasscodeClose = () => {
+    setShowPasscodeModal(false)
+    setPendingFormData(null)
   }
   
   // Get max date (today) for date of birth
@@ -164,207 +191,238 @@ const RegistrationForm = ({ onSubmissionSuccess }) => {
   }
   
   return (
-    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto bg-white rounded-lg shadow-md p-6">
-      {/* Personal Information */}
-      <Section title="Personal Information">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            label="Full Name"
-            id="fullName"
-            name="fullName"
-            value={formData.fullName}
-            onChange={handleChange}
-            required
-            error={errors.fullName}
-            placeholder="Enter your full name"
-          />
-          
-          <FormField
-            label="Gender"
-            id="gender"
-            name="gender"
-            type="select"
-            value={formData.gender}
-            onChange={handleChange}
-            required
-            error={errors.gender}
-            options={genderOptions}
-          />
+    <div className="max-w-4xl xl:max-w-6xl mx-auto">
+      <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-4 sm:p-6 lg:p-10 xl:p-12">
+        {/* Form Title */}
+        <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+          <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold gradient-text mb-2 lg:mb-4">
+            Volunteer Registration
+          </h1>
+          <p className="text-sm sm:text-base lg:text-lg xl:text-xl text-gray-600">
+            Join NSS KMIT and make a difference in your community
+          </p>
         </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            label="Father's Name"
-            id="fatherName"
-            name="fatherName"
-            value={formData.fatherName}
-            onChange={handleChange}
-            required
-            error={errors.fatherName}
-            placeholder="Enter your father's name"
-          />
-          
-          <FormField
-            label="Mother's Name"
-            id="motherName"
-            name="motherName"
-            value={formData.motherName}
-            onChange={handleChange}
-            required
-            error={errors.motherName}
-            placeholder="Enter your mother's name"
-          />
-        </div>
-        
-        <FormField
-          label="Complete Residential Address"
-          id="address"
-          name="address"
-          type="textarea"
-          value={formData.address}
-          onChange={handleChange}
-          required
-          error={errors.address}
-          placeholder="Enter your complete address"
-        />
-        
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <FormField
-            label="Date of Birth"
-            id="dob"
-            name="dob"
-            type="date"
-            value={formData.dob}
-            onChange={handleChange}
-            required
-            error={errors.dob}
-            max={getMaxDate()}
-          />
-          
-          <FormField
-            label="Blood Group"
-            id="bloodGroup"
-            name="bloodGroup"
-            type="select"
-            value={formData.bloodGroup}
-            onChange={handleChange}
-            required
-            error={errors.bloodGroup}
-            options={bloodGroupOptions}
-          />
-          
-          <FormField
-            label="Willing to donate blood?"
-            id="willingToDonateBlood"
-            name="willingToDonateBlood"
-            type="select"
-            value={formData.willingToDonateBlood}
-            onChange={handleChange}
-            required
-            error={errors.willingToDonateBlood}
-            options={yesNoOptions}
-          />
-        </div>
-      </Section>
-      
-      {/* Contact Information */}
-      <Section title="Contact Information">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <FormField
-            label="Contact Phone Number"
-            id="phoneNumber"
-            name="phoneNumber"
-            value={formData.phoneNumber}
-            onChange={handleChange}
-            required
-            error={errors.phoneNumber}
-            placeholder="10-digit phone number"
-          />
-          
-          <FormField
-            label="Email Address"
-            id="email"
-            name="email"
-            type="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            error={errors.email}
-            placeholder="Enter your email address"
-          />
-        </div>
-      </Section>
-      
-      {/* Academic Information */}
-      <Section title="Academic Information">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <FormField
-            label="JNTU Roll Number"
-            id="rollNumber"
-            name="rollNumber"
-            value={formData.rollNumber}
-            onChange={handleChange}
-            required
-            error={errors.rollNumber}
-            placeholder="Enter your roll number"
-          />
-          
-          <FormField
-            label="Past NSS Volunteer"
-            id="pastNssVolunteer"
-            name="pastNssVolunteer"
-            type="select"
-            value={formData.pastNssVolunteer}
-            onChange={handleChange}
-            required
-            error={errors.pastNssVolunteer}
-            options={yesNoOptions}
-          />
-          
-          <FormField
-            label="Member of NCC"
-            id="memberOfNcc"
-            name="memberOfNcc"
-            type="select"
-            value={formData.memberOfNcc}
-            onChange={handleChange}
-            required
-            error={errors.memberOfNcc}
-            options={yesNoOptions}
-          />
-        </div>
-      </Section>
-      
-      {/* Submit Button */}
-      <div className="mt-8 flex flex-col items-center">
-        {submitError && (
-          <div className="mb-4 p-3 bg-error-50 text-error-700 rounded-md flex items-center">
-            <FaExclamationTriangle className="mr-2" />
-            {submitError}
+
+        {/* Personal Information */}
+        <Section title="Personal Information">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 xl:gap-10">
+            <FormField
+              label="Full Name"
+              id="fullName"
+              name="fullName"
+              value={formData.fullName}
+              onChange={handleChange}
+              required
+              error={errors.fullName}
+              placeholder="Enter your full name"
+            />
+            
+            <FormField
+              label="Gender"
+              id="gender"
+              name="gender"
+              type="select"
+              value={formData.gender}
+              onChange={handleChange}
+              required
+              error={errors.gender}
+              options={genderOptions}
+            />
           </div>
-        )}
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 xl:gap-10">
+            <FormField
+              label="Father's Name"
+              id="fatherName"
+              name="fatherName"
+              value={formData.fatherName}
+              onChange={handleChange}
+              required
+              error={errors.fatherName}
+              placeholder="Enter your father's name"
+            />
+            
+            <FormField
+              label="Mother's Name"
+              id="motherName"
+              name="motherName"
+              value={formData.motherName}
+              onChange={handleChange}
+              required
+              error={errors.motherName}
+              placeholder="Enter your mother's name"
+            />
+          </div>
+          
+          <FormField
+            label="Complete Residential Address"
+            id="address"
+            name="address"
+            type="textarea"
+            value={formData.address}
+            onChange={handleChange}
+            required
+            error={errors.address}
+            placeholder="Enter your complete address"
+          />
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 xl:gap-10">
+            <FormField
+              label="Date of Birth"
+              id="dob"
+              name="dob"
+              type="date"
+              value={formData.dob}
+              onChange={handleChange}
+              required
+              error={errors.dob}
+              max={getMaxDate()}
+            />
+            
+            <FormField
+              label="Blood Group"
+              id="bloodGroup"
+              name="bloodGroup"
+              type="select"
+              value={formData.bloodGroup}
+              onChange={handleChange}
+              required
+              error={errors.bloodGroup}
+              options={bloodGroupOptions}
+            />
+            
+            <FormField
+              label="Willing to donate blood?"
+              id="willingToDonateBlood"
+              name="willingToDonateBlood"
+              type="select"
+              value={formData.willingToDonateBlood}
+              onChange={handleChange}
+              required
+              error={errors.willingToDonateBlood}
+              options={yesNoOptions}
+            />
+          </div>
+        </Section>
         
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className={`btn btn-primary w-full md:w-1/2 flex items-center justify-center ${
-            isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
-          }`}
-        >
-          {isSubmitting ? (
-            <>
-              <FaSpinner className="animate-spin mr-2" />
-              Submitting...
-            </>
-          ) : (
-            <>
-              <FaCheck className="mr-2" />
-              Submit Registration
-            </>
+        {/* Contact Information */}
+        <Section title="Contact Information">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8 xl:gap-10">
+            <FormField
+              label="Contact Phone Number"
+              id="phoneNumber"
+              name="phoneNumber"
+              value={formData.phoneNumber}
+              onChange={handleChange}
+              required
+              error={errors.phoneNumber}
+              placeholder="10-digit phone number"
+            />
+            
+            <FormField
+              label="Email Address"
+              id="email"
+              name="email"
+              type="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+              error={errors.email}
+              placeholder="Enter your email address"
+            />
+          </div>
+        </Section>
+        
+        {/* Academic Information */}
+        <Section title="Academic Information">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 lg:gap-8 xl:gap-10">
+            <FormField
+              label="JNTU Roll Number"
+              id="rollNumber"
+              name="rollNumber"
+              value={formData.rollNumber}
+              onChange={handleChange}
+              required
+              error={errors.rollNumber}
+              placeholder="Enter your roll number"
+            />
+            
+            <FormField
+              label="Graduation Year"
+              id="graduationYear"
+              name="graduationYear"
+              type="select"
+              value={formData.graduationYear}
+              onChange={handleChange}
+              required
+              error={errors.graduationYear}
+              options={graduationYearOptions}
+            />
+            
+            <FormField
+              label="Past NSS Volunteer"
+              id="pastNssVolunteer"
+              name="pastNssVolunteer"
+              type="select"
+              value={formData.pastNssVolunteer}
+              onChange={handleChange}
+              required
+              error={errors.pastNssVolunteer}
+              options={yesNoOptions}
+            />
+            
+            <FormField
+              label="Member of NCC"
+              id="memberOfNcc"
+              name="memberOfNcc"
+              type="select"
+              value={formData.memberOfNcc}
+              onChange={handleChange}
+              required
+              error={errors.memberOfNcc}
+              options={yesNoOptions}
+            />
+          </div>
+        </Section>
+        
+        {/* Submit Button */}
+        <div className="mt-8 sm:mt-10 lg:mt-16 xl:mt-20 flex flex-col items-center">
+          {submitError && (
+            <div className="mb-4 sm:mb-6 lg:mb-8 p-4 lg:p-6 bg-error-50 text-error-700 rounded-lg flex items-center w-full lg:text-lg">
+              <FaExclamationTriangle className="mr-2 flex-shrink-0" />
+              <span className="text-sm lg:text-base">{submitError}</span>
+            </div>
           )}
-        </button>
-      </div>
-    </form>
+          
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`btn btn-primary flex items-center justify-center lg:text-lg xl:text-xl lg:px-8 xl:px-12 lg:py-4 xl:py-6 ${
+              isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+            }`}
+          >
+            {isSubmitting ? (
+              <>
+                <FaSpinner className="animate-spin mr-2" />
+                Submitting...
+              </>
+            ) : (
+              <>
+                <FaCheck className="mr-2" />
+                Submit Registration
+              </>
+            )}
+          </button>
+        </div>
+      </form>
+
+      {/* Passcode Modal */}
+      <PasscodeModal
+        isOpen={showPasscodeModal}
+        onClose={handlePasscodeClose}
+        onSuccess={handlePasscodeSuccess}
+      />
+    </div>
   )
 }
 

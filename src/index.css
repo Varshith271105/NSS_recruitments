@@ -35,29 +35,52 @@ body {
   }
 }
 
-/* Custom form styling */
+/* Gradient text styling for better browser support */
+.gradient-text {
+  background: linear-gradient(90deg, #4f46e5 0%, #4338ca 50%, #0284c7 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
+}
+
+/* Fallback for browsers that don't support gradient text */
+@supports not (-webkit-background-clip: text) {
+  .gradient-text {
+    background: none;
+    color: #4338ca;
+    -webkit-text-fill-color: initial;
+  }
+}
+
+/* Custom form styling optimized for mobile and desktop */
 .form-input {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200;
+  @apply w-full px-3 py-3 sm:py-2 lg:px-4 lg:py-3 xl:px-5 xl:py-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-all duration-200 text-base lg:text-lg;
+  /* Prevent zoom on iOS */
+  font-size: 16px;
 }
 
 .form-label {
-  @apply block text-sm font-medium text-gray-700 mb-1;
+  @apply block text-sm sm:text-base lg:text-lg xl:text-xl font-medium text-gray-700 mb-2 lg:mb-3;
 }
 
 .form-select {
-  @apply w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white transition-all duration-200;
+  @apply w-full px-3 py-3 sm:py-2 lg:px-4 lg:py-3 xl:px-5 xl:py-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-primary-500 bg-white transition-all duration-200 text-base lg:text-lg;
+  /* Prevent zoom on iOS */
+  font-size: 16px;
 }
 
 .form-checkbox {
-  @apply h-4 w-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500 transition-all duration-200;
+  @apply h-5 w-5 sm:h-4 sm:w-4 lg:h-6 lg:w-6 text-primary-600 border-gray-300 rounded focus:ring-primary-500 transition-all duration-200;
 }
 
 .btn {
-  @apply px-4 py-2 rounded-md shadow-sm font-medium transition-all duration-200;
+  @apply px-6 py-3 sm:px-4 sm:py-2 lg:px-6 lg:py-3 xl:px-8 xl:py-4 rounded-lg shadow-sm font-medium transition-all duration-200 text-base lg:text-lg xl:text-xl;
 }
 
 .btn-primary {
-  @apply bg-primary-600 text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  @apply bg-primary-600 text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 lg:shadow-lg xl:shadow-xl hover:shadow-xl;
 }
 
 .btn-secondary {
@@ -65,9 +88,46 @@ body {
 }
 
 .section-title {
-  @apply text-lg font-semibold text-gray-800 mb-4 border-b border-gray-200 pb-2;
+  @apply text-lg sm:text-xl lg:text-2xl xl:text-3xl font-semibold text-gray-800 mb-4 sm:mb-6 lg:mb-8 xl:mb-10 border-b border-gray-200 pb-3 lg:pb-4 xl:pb-6;
 }
 
 .signature-pad {
-  @apply border border-gray-300 rounded-md bg-white;
+  @apply border border-gray-300 rounded-lg bg-white;
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 640px) {
+  .form-input, .form-select {
+    min-height: 48px; /* Better touch target */
+  }
+  
+  .form-checkbox {
+    min-width: 20px;
+    min-height: 20px;
+  }
+  
+  .btn {
+    min-height: 48px; /* Better touch target */
+    width: 100%; /* Full width buttons on mobile */
+  }
+}
+
+/* Desktop-specific optimizations */
+@media (min-width: 1024px) {
+  .form-input, .form-select {
+    min-height: 56px; /* Larger touch targets for desktop */
+  }
+  
+  .form-input:focus, .form-select:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  
+  .btn:active {
+    transform: translateY(0);
+  }
 }

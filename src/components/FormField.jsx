@@ -68,7 +68,7 @@ const FormField = ({
         )
       case 'radio':
         return (
-          <div className="flex space-x-6">
+          <div className="flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-6">
             {options.map((option) => (
               <div key={option.value} className="flex items-center">
                 <input
@@ -78,11 +78,11 @@ const FormField = ({
                   value={option.value}
                   checked={value === option.value}
                   onChange={onChange}
-                  className={`h-4 w-4 text-primary-600 border-gray-300 focus:ring-primary-500 ${className}`}
+                  className={`h-5 w-5 sm:h-4 sm:w-4 text-primary-600 border-gray-300 focus:ring-primary-500 ${className}`}
                 />
                 <label 
                   htmlFor={`${id}-${option.value}`} 
-                  className={`ml-2 block text-sm text-gray-700 ${labelClassName}`}
+                  className={`ml-3 sm:ml-2 block text-base sm:text-sm text-gray-700 ${labelClassName}`}
                 >
                   {option.label}
                 </label>
@@ -125,15 +125,15 @@ const FormField = ({
   // For checkbox, the label is rendered next to the input
   if (type === 'checkbox') {
     return (
-      <div className={`mb-4 ${className}`}>
+      <div className={`mb-4 sm:mb-6 ${className}`}>
         {renderField()}
-        {error && <p className="mt-1 text-sm text-error-600">{error}</p>}
+        {error && <p className="mt-2 text-sm text-error-600">{error}</p>}
       </div>
     )
   }
 
   return (
-    <div className={`mb-4 ${className}`}>
+    <div className={`mb-4 sm:mb-6 ${className}`}>
       {type !== 'checkbox' && (
         <label htmlFor={id} className={`form-label ${labelClassName}`}>
           {label} {required && <span className="text-error-500">*</span>}
@@ -141,7 +141,7 @@ const FormField = ({
       )}
       {renderField()}
       {children}
-      {error && <p className="mt-1 text-sm text-error-600">{error}</p>}
+      {error && <p className="mt-2 text-sm text-error-600">{error}</p>}
     </div>
   )
 }
